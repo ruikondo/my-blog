@@ -36,31 +36,33 @@ export default async function PostPage({
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
-        <Link
-          href="/information"
-          className="text-sm text-gray-500 underline underline-offset-4 hover:text-gray-900"
-        >
-          ← Information に戻る
-        </Link>
+      <main className="flex-1 bg-[#121212] text-white">
+        <div className="mx-auto w-full max-w-3xl px-6 py-16">
+          <Link
+            href="/information"
+            className="text-sm text-gray-400 underline underline-offset-4 hover:text-[#26bcdb]"
+          >
+            ← Information に戻る
+          </Link>
 
-        <article className="mt-8">
-          <time className="text-xs tracking-wider text-gray-400">
-            {post.publishedAt?.toLocaleDateString("ja-JP", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })}
-          </time>
-          <h1 className="mt-2 text-3xl font-bold leading-tight text-gray-900">
-            {post.title}
-          </h1>
-          <p className="mt-3 text-sm text-gray-500">{post.author.name}</p>
+          <article className="mt-8">
+            <time className="text-xs tracking-wider text-gray-500">
+              {post.publishedAt?.toLocaleDateString("ja-JP", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </time>
+            <h1 className="mt-2 text-3xl font-bold leading-tight text-white">
+              {post.title}
+            </h1>
+            <p className="mt-3 text-sm text-gray-500">{post.author.name}</p>
 
-          <div className="mt-10 whitespace-pre-wrap leading-relaxed text-gray-800">
-            {post.body}
-          </div>
-        </article>
+            <div className="mt-10 whitespace-pre-wrap leading-relaxed text-gray-300">
+              {post.body}
+            </div>
+          </article>
+        </div>
       </main>
       <SiteFooter />
     </>

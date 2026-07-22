@@ -25,42 +25,44 @@ export default async function InformationPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold tracking-wide text-gray-900">
-            Information
-          </h1>
-          <p className="mt-2 text-sm text-gray-500">お知らせ</p>
-        </div>
+      <main className="flex-1 bg-[#121212] text-white">
+        <div className="mx-auto w-full max-w-3xl px-6 py-16">
+          <div className="mb-12">
+            <h1 className="text-3xl font-bold tracking-wide text-white">
+              Information
+            </h1>
+            <p className="mt-2 text-sm text-[#26bcdb]">お知らせ</p>
+          </div>
 
-        {posts.length === 0 ? (
-          <p className="text-gray-500">お知らせはまだありません。</p>
-        ) : (
-          <ul className="flex flex-col divide-y divide-gray-200 border-t border-gray-200">
-            {posts.map((post) => (
-              <li key={post.id}>
-                <Link
-                  href={`/posts/${post.id}`}
-                  className="group block py-6 transition-colors hover:bg-gray-50"
-                >
-                  <time className="text-xs tracking-wider text-gray-400">
-                    {post.publishedAt?.toLocaleDateString("ja-JP", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </time>
-                  <h2 className="mt-1 text-lg font-semibold text-gray-900 group-hover:text-gray-600">
-                    {post.title}
-                  </h2>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {excerpt(post.body)}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+          {posts.length === 0 ? (
+            <p className="text-gray-400">お知らせはまだありません。</p>
+          ) : (
+            <ul className="flex flex-col divide-y divide-white/10 border-t border-white/10">
+              {posts.map((post) => (
+                <li key={post.id}>
+                  <Link
+                    href={`/posts/${post.id}`}
+                    className="group block py-6 transition-colors hover:bg-white/5"
+                  >
+                    <time className="text-xs tracking-wider text-gray-500">
+                      {post.publishedAt?.toLocaleDateString("ja-JP", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </time>
+                    <h2 className="mt-1 text-lg font-semibold text-white group-hover:text-[#26bcdb]">
+                      {post.title}
+                    </h2>
+                    <p className="mt-1 text-sm text-gray-400">
+                      {excerpt(post.body)}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </main>
       <SiteFooter />
     </>

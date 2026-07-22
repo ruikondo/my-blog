@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { createUser, deleteUser } from "./actions";
+import BackLink from "../_components/BackLink";
 
 export default async function UsersPage() {
   const session = await auth();
@@ -12,6 +13,7 @@ export default async function UsersPage() {
 
   return (
     <div className="max-w-3xl">
+      <BackLink href="/admin" label="ダッシュボードに戻る" />
       <h1 className="mb-4 text-xl font-bold">ユーザー管理</h1>
 
       <table className="w-full border-collapse text-sm">

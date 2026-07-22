@@ -26,6 +26,17 @@ model User {
   createdAt    DateTime @default(now())
 }
 
+// 固定ページ(Service / About)。slug ごとに1件のシングルトン。
+// 常時公開のコーポレートページのため published フラグは持たない。
+model Page {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  body      String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
 model Post {
   id          String    @id @default(cuid())
   title       String

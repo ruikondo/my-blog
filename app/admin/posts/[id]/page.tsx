@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { updatePost, deletePost } from "../actions";
+import BackLink from "../../_components/BackLink";
 
 export default async function EditPostPage({
   params,
@@ -13,6 +14,7 @@ export default async function EditPostPage({
 
   return (
     <div className="max-w-2xl">
+      <BackLink href="/admin/posts" label="記事一覧に戻る" />
       <h1 className="mb-4 text-xl font-bold">記事の編集</h1>
       <form action={updatePost.bind(null, post.id)} className="flex flex-col gap-4">
         <input

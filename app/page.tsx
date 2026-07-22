@@ -4,12 +4,22 @@ import SiteHeader from "@/app/_components/SiteHeader";
 import SiteFooter from "@/app/_components/SiteFooter";
 
 export default async function HomePage() {
-  const latestPosts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { publishedAt: "desc" },
-    take: 3,
-    select: { id: true, title: true, publishedAt: true },
-  });
+  // HOME は編集可能な固定ページ(ヒーローの見出し・説明文)。
+  // Information セクションは別途 Post を呼び出す動的リスト。
+  const [home, latestPosts] = await Promise.all([
+    prisma.page.findUnique({ where: { slug: "home" } }),
+    prisma.post.findMany({
+      where: { published: true },
+      orderBy: { publishedAt: "desc" },
+      take: 3,
+      select: { id: true, title: true, publishedAt: true },
+    }),
+  ]);
+
+  const heroTitle = home?.title ?? "貴社のマーケティング課題を、FULLSAIL が解決します。";
+  const heroBody =
+    home?.body ??
+    "マーケティングコンサルティングから、ロング CPE 広告・ASO・インフルエンサー施策まで。成果につながるソリューションを提供します。";
 
   return (
     <>
@@ -24,13 +34,10 @@ export default async function HomePage() {
               MARKETING SOLUTIONS
             </p>
             <h1 className="mt-5 max-w-2xl text-4xl font-bold leading-tight text-white md:text-5xl">
-              貴社のマーケティング課題を、
-              <br />
-              FULLSAIL が解決します。
+              {heroTitle}
             </h1>
-            <p className="mt-6 max-w-xl text-gray-400">
-              マーケティングコンサルティングから、ロング CPE 広告・ASO・インフルエンサー施策まで。
-              成果につながるソリューションを提供します。
+            <p className="mt-6 max-w-xl whitespace-pre-wrap text-gray-400">
+              {heroBody}
             </p>
             <Link
               href="#"

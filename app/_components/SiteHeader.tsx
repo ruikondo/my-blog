@@ -3,12 +3,11 @@ import Link from "next/link";
 
 // full-sail.jp の配色(Neve テーマ)に準拠:
 //   背景 #121212 / 文字 #ffffff / アクセント #26bcdb(補助 #1f90a6)
-// Home / Information はこの予行演習の実装対象。Service / About は当面プレースホルダ。
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Information", href: "/information" },
-  { label: "Service", href: "#" },
-  { label: "About", href: "#" },
+  { label: "Service", href: "/service" },
+  { label: "About", href: "/about" },
 ] as const;
 
 export default function SiteHeader() {

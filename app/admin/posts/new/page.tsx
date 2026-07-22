@@ -1,8 +1,10 @@
 import { createPost } from "../actions";
+import BackLink from "../../_components/BackLink";
 
 export default function NewPostPage() {
   return (
     <div className="max-w-2xl">
+      <BackLink href="/admin/posts" label="記事一覧に戻る" />
       <h1 className="mb-4 text-xl font-bold">記事の新規作成</h1>
       <form action={createPost} className="flex flex-col gap-4">
         <input

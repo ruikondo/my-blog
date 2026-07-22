@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { togglePublish } from "./actions";
+import BackLink from "../_components/BackLink";
 
 export default async function PostsPage() {
   const posts = await prisma.post.findMany({
@@ -10,6 +11,7 @@ export default async function PostsPage() {
 
   return (
     <div>
+      <BackLink href="/admin" label="ダッシュボードに戻る" />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-bold">記事一覧</h1>
         <Link

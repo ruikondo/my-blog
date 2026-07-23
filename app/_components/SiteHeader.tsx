@@ -37,12 +37,6 @@ export default function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="#"
-            className="rounded-full bg-[#26bcdb] px-4 py-2 font-medium text-[#0b1416] transition-colors hover:bg-[#1f90a6]"
-          >
-            Contact
-          </Link>
         </nav>
       </div>
     </header>

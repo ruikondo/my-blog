@@ -20,11 +20,18 @@ export default async function AdminHomePage() {
           </Link>
         </li>
         {role === "ADMIN" && (
-          <li>
-            <Link href="/admin/users" className="underline">
-              ユーザー管理
-            </Link>
-          </li>
+          <>
+            <li>
+              <Link href="/admin/inquiries" className="underline">
+                お問い合わせの管理
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/users" className="underline">
+                ユーザー管理
+              </Link>
+            </li>
+          </>
         )}
       </ul>
     </div>

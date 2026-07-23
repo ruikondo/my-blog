@@ -26,6 +26,15 @@ model User {
   createdAt    DateTime @default(now())
 }
 
+// お問い合わせフォームの送信内容(公開フォームから作成、管理画面で閲覧)
+model Inquiry {
+  id        String   @id @default(cuid())
+  company   String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
 // 固定ページ(Service / About)。slug ごとに1件のシングルトン。
 // 常時公開のコーポレートページのため published フラグは持たない。
 model Page {

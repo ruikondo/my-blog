@@ -39,12 +39,6 @@ export default async function HomePage() {
             <p className="mt-6 max-w-xl whitespace-pre-wrap text-gray-400">
               {heroBody}
             </p>
-            <Link
-              href="#"
-              className="mt-9 inline-block rounded-full bg-[#26bcdb] px-6 py-3 text-sm font-medium text-[#0b1416] transition-colors hover:bg-[#1f90a6]"
-            >
-              お問い合わせ
-            </Link>
           </div>
         </section>
 

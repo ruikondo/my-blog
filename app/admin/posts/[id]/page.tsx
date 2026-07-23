@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { updatePost, deletePost } from "../actions";
+import { toJstDateTimeLocal } from "@/lib/datetime";
 import BackLink from "../../_components/BackLink";
 
 export default async function EditPostPage({
@@ -29,6 +30,20 @@ export default async function EditPostPage({
           defaultValue={post.body}
           className="rounded border p-2"
         />
+        <label className="flex flex-col gap-1 text-sm">
+          公開日時
+          <input
+            type="datetime-local"
+            name="publishedAt"
+            defaultValue={
+              post.publishedAt ? toJstDateTimeLocal(post.publishedAt) : ""
+            }
+            className="rounded border p-2"
+          />
+          <span className="text-xs text-gray-500">
+            公開ページに表示・並び替えに使われる日付です(空にすると日付なし)。
+          </span>
+        </label>
         <button
           type="submit"
           className="self-start rounded bg-black px-4 py-2 text-white hover:opacity-80"

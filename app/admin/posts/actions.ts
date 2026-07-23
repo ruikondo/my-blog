@@ -5,6 +5,15 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/authz";
 
+// 記事の変更後に再検証すべき公開ページ。
+// 本番は Full Route Cache が効くため、ここを漏らすと更新が反映されない。
+function revalidatePostPages(id?: string) {
+  revalidatePath("/admin/posts");
+  revalidatePath("/"); // トップの最新お知らせ
+  revalidatePath("/information"); // お知らせ一覧
+  if (id) revalidatePath(`/posts/${id}`); // 記事詳細
+}
+
 export async function createPost(formData: FormData) {
   const { userId } = await requireRole("EDITOR");
   const title = String(formData.get("title") ?? "").trim();
@@ -14,7 +23,7 @@ export async function createPost(formData: FormData) {
   const post = await prisma.post.create({
     data: { title, body, authorId: userId },
   });
-  revalidatePath("/admin/posts");
+  revalidatePostPages(post.id);
   redirect(`/admin/posts/${post.id}`);
 }
 
@@ -25,7 +34,7 @@ export async function updatePost(id: string, formData: FormData) {
   if (!title) throw new Error("タイトルは必須です");
 
   await prisma.post.update({ where: { id }, data: { title, body } });
-  revalidatePath("/admin/posts");
+  revalidatePostPages(id);
   redirect("/admin/posts");
 }
 
@@ -39,13 +48,12 @@ export async function togglePublish(id: string) {
       publishedAt: post.published ? null : new Date(),
     },
   });
-  revalidatePath("/admin/posts");
-  revalidatePath("/");
+  revalidatePostPages(id);
 }
 
 export async function deletePost(id: string) {
   await requireRole("EDITOR");
   await prisma.post.delete({ where: { id } });
-  revalidatePath("/admin/posts");
+  revalidatePostPages(id);
   redirect("/admin/posts");
 }

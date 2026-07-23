@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/authz";
+import { parseJstDateTimeLocal } from "@/lib/datetime";
 
 // 記事の変更後に再検証すべき公開ページ。
 // 本番は Full Route Cache が効くため、ここを漏らすと更新が反映されない。
@@ -31,9 +32,10 @@ export async function updatePost(id: string, formData: FormData) {
   await requireRole("EDITOR");
   const title = String(formData.get("title") ?? "").trim();
   const body = String(formData.get("body") ?? "");
+  const publishedAt = parseJstDateTimeLocal(String(formData.get("publishedAt") ?? ""));
   if (!title) throw new Error("タイトルは必須です");
 
-  await prisma.post.update({ where: { id }, data: { title, body } });
+  await prisma.post.update({ where: { id }, data: { title, body, publishedAt } });
   revalidatePostPages(id);
   redirect("/admin/posts");
 }
@@ -45,7 +47,9 @@ export async function togglePublish(id: string) {
     where: { id },
     data: {
       published: !post.published,
-      publishedAt: post.published ? null : new Date(),
+      // 公開時は手動設定済みの日時を尊重し、未設定なら現在時刻。
+      // 非公開化しても日時は保持する(編集した公開日時を失わないため)。
+      publishedAt: post.published ? post.publishedAt : (post.publishedAt ?? new Date()),
     },
   });
   revalidatePostPages(id);

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
 
@@ -28,6 +29,9 @@ export default async function AdminLayout({
               : "編集者"}
             )
           </span>
+          <Link href="/admin/password" className="underline underline-offset-2 hover:opacity-70">
+            パスワード変更
+          </Link>
           <form action={logout}>
             <button type="submit" className="rounded border px-3 py-1 hover:bg-gray-100">
               ログアウト

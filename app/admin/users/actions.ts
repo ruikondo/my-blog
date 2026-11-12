@@ -29,7 +29,8 @@ export async function createUser(formData: FormData) {
 
 export async function deleteUser(id: string) {
   const { userId } = await requireRole("ADMIN");
-  if (id === userId) throw new Error("自分自身は削除できません");
+  // セッションにIDが無い場合も、自分自身かどうか判定できないので拒否する
+  if (!userId || id === userId) throw new Error("自分自身は削除できません");
 
   const admins = await prisma.user.count({ where: { role: "ADMIN" } });
   const target = await prisma.user.findUniqueOrThrow({ where: { id } });

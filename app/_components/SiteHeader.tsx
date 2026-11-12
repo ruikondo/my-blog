@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import MobileNav from "./MobileNav";
 
 // full-sail.jp の配色(Neve テーマ)に準拠:
 //   背景 #121212 / 文字 #ffffff / アクセント #26bcdb(補助 #1f90a6)
@@ -27,7 +28,7 @@ export default function SiteHeader() {
             FULLSAIL
           </span>
         </Link>
-        <nav className="flex items-center gap-6 text-sm text-gray-300">
+        <nav className="hidden items-center gap-6 text-sm text-gray-300 md:flex">
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -38,6 +39,7 @@ export default function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <MobileNav items={navItems} />
       </div>
     </header>
   );

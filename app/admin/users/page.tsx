@@ -8,6 +8,7 @@ export default async function UsersPage() {
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
   if (role !== "ADMIN") notFound();
+  const currentUserId = session?.user?.id;
 
   const users = await prisma.user.findMany({ orderBy: { createdAt: "asc" } });
 
@@ -32,11 +33,15 @@ export default async function UsersPage() {
               <td className="p-2">{user.email}</td>
               <td className="p-2">{user.role === "ADMIN" ? "管理者" : "編集者"}</td>
               <td className="p-2 text-right">
-                <form action={deleteUser.bind(null, user.id)}>
-                  <button type="submit" className="rounded border border-red-500 px-3 py-1 text-red-600 hover:bg-red-50">
-                    削除
-                  </button>
-                </form>
+                {user.id === currentUserId ? (
+                  <span className="text-xs text-gray-500">(ログイン中)</span>
+                ) : (
+                  <form action={deleteUser.bind(null, user.id)}>
+                    <button type="submit" className="rounded border border-red-500 px-3 py-1 text-red-600 hover:bg-red-50">
+                      削除
+                    </button>
+                  </form>
+                )}
               </td>
             </tr>
           ))}

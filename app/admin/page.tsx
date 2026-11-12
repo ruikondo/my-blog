@@ -19,6 +19,11 @@ export default async function AdminHomePage() {
             固定ページの管理
           </Link>
         </li>
+        <li>
+          <Link href="/admin/password" className="underline">
+            パスワード変更
+          </Link>
+        </li>
         {role === "ADMIN" && (
           <>
             <li>

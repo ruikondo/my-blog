@@ -6,6 +6,8 @@ import { prisma } from "@/lib/prisma";
 import BackLink from "../_components/BackLink";
 import ConfirmSubmitButton from "../_components/ConfirmSubmitButton";
 import { deleteInquiry } from "./actions";
+import BulkDeleteForm from "./BulkDeleteForm";
+import { BULK_FORM_ID } from "./constants";
 
 const PER_PAGE = 20;
 
@@ -89,34 +91,48 @@ export default async function InquiriesPage({
           {q ? "該当するお問い合わせはありません。" : "お問い合わせはまだありません。"}
         </p>
       ) : (
-        <ul className="flex flex-col gap-4">
-          {inquiries.map((inquiry) => (
-            <li key={inquiry.id} className="rounded border p-4">
-              <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
-                <span className="font-semibold">{inquiry.company}</span>
-                <time className="text-gray-500">
-                  {inquiry.createdAt.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })}
-                </time>
-              </div>
-              <p className="mt-1 text-sm text-gray-600">
-                <a href={`mailto:${inquiry.email}`} className="underline hover:text-gray-900">
-                  {inquiry.email}
-                </a>
-              </p>
-              <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed">
-                {inquiry.message}
-              </p>
-              <form action={deleteInquiry.bind(null, inquiry.id)} className="mt-3 text-right">
-                <ConfirmSubmitButton
-                  message={`「${inquiry.company}」からのお問い合わせを削除します。よろしいですか?`}
-                  className="rounded border border-red-500 px-3 py-1 text-sm text-red-600 hover:bg-red-50 disabled:opacity-60"
-                >
-                  削除
-                </ConfirmSubmitButton>
-              </form>
-            </li>
-          ))}
-        </ul>
+        <>
+          {/* ページ・検索条件が変わったら選択状態をリセットするため key を付ける */}
+          <BulkDeleteForm key={`${q}-${page}`} />
+          <ul className="flex flex-col gap-4">
+            {inquiries.map((inquiry) => (
+              <li key={inquiry.id} className="rounded border p-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-2 text-sm">
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="ids"
+                      value={inquiry.id}
+                      form={BULK_FORM_ID}
+                      className="h-4 w-4 self-center"
+                      aria-label={`「${inquiry.company}」を選択`}
+                    />
+                    <span className="font-semibold">{inquiry.company}</span>
+                  </label>
+                  <time className="text-gray-500">
+                    {inquiry.createdAt.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" })}
+                  </time>
+                </div>
+                <p className="mt-1 text-sm text-gray-600">
+                  <a href={`mailto:${inquiry.email}`} className="underline hover:text-gray-900">
+                    {inquiry.email}
+                  </a>
+                </p>
+                <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed">
+                  {inquiry.message}
+                </p>
+                <form action={deleteInquiry.bind(null, inquiry.id)} className="mt-3 text-right">
+                  <ConfirmSubmitButton
+                    message={`「${inquiry.company}」からのお問い合わせを削除します。よろしいですか?`}
+                    className="rounded border border-red-500 px-3 py-1 text-sm text-red-600 hover:bg-red-50 disabled:opacity-60"
+                  >
+                    削除
+                  </ConfirmSubmitButton>
+                </form>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {totalPages > 1 && (

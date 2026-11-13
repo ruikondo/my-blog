@@ -8,16 +8,18 @@ export default function ConfirmSubmitButton({
   message,
   children,
   className,
+  disabled = false,
 }: {
   message: string;
   children: React.ReactNode;
   className?: string;
+  disabled?: boolean;
 }) {
   const { pending } = useFormStatus();
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={disabled || pending}
       onClick={(e) => {
         if (!window.confirm(message)) e.preventDefault();
       }}

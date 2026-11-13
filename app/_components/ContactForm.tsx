@@ -1,15 +1,26 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { submitInquiry, type ContactState } from "./contact-actions";
+import Turnstile, { type TurnstileHandle } from "./Turnstile";
 
 const initialState: ContactState = { ok: false, error: null };
 
-export default function ContactForm() {
+export default function ContactForm({
+  turnstileSiteKey,
+}: {
+  turnstileSiteKey: string;
+}) {
   const [state, formAction, pending] = useActionState(
     submitInquiry,
     initialState,
   );
+  const turnstileRef = useRef<TurnstileHandle>(null);
+
+  // トークンは1回限り有効なので、送信エラー後はウィジェットをリセットして再認証させる
+  useEffect(() => {
+    if (state.error) turnstileRef.current?.reset();
+  }, [state]);
 
   if (state.ok) {
     return (
@@ -69,6 +80,13 @@ export default function ContactForm() {
           placeholder="お問い合わせ内容をご記入ください。"
         />
       </div>
+      {turnstileSiteKey ? (
+        <Turnstile ref={turnstileRef} siteKey={turnstileSiteKey} />
+      ) : (
+        <p className="text-sm text-red-300">
+          現在フォームからのお問い合わせを受け付けできません。
+        </p>
+      )}
       <button
         type="submit"
         disabled={pending}

@@ -4,6 +4,7 @@ import { isFixedPageSlug } from "@/lib/pages";
 import SiteHeader from "./SiteHeader";
 import SiteFooter from "./SiteFooter";
 import ContactForm from "./ContactForm";
+import { turnstileSiteKey } from "@/lib/turnstile";
 
 // 固定ページ(Service / About)の公開表示。未作成・非固定 slug は 404。
 // showContactForm が true のとき本文の下にお問い合わせフォームを表示。
@@ -36,7 +37,7 @@ export default async function FixedPageView({
                 Contact
               </h2>
               <p className="mt-1 mb-8 text-sm text-[#26bcdb]">お問い合わせ</p>
-              <ContactForm />
+              <ContactForm turnstileSiteKey={turnstileSiteKey} />
             </section>
           )}
         </div>
